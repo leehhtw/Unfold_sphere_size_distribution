@@ -1,3 +1,6 @@
+%% Unfolding sphere size distribution
+% Author: Hong-Hsi Lee, December, 2019
+
 clear
 close all
 restoredefaultpath
