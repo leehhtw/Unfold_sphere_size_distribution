@@ -52,8 +52,6 @@ Pa2 = Pv2Pa(xi,rc,dr);
 plot(rc,Pa2,'--r');
 
 %%
-addpath('/Users/honghsilee/Desktop/Gene_EM/lib');
-load(fullfile('/Users/honghsilee/Desktop/Gene_EM','size_nuclei.mat'));
 rg = sqrt(prod(cellsize,2));
 a = 20;max(rg);
 Nr = 20;
