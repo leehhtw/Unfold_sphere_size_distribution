@@ -35,11 +35,10 @@ Pa = Pv2Pa(Pv,rc,dr);
 
 % Unfolding sphere radius histogram, gradient descent
 xstarts = Pa;           % Initialize with cross-section radius histogram
-lambda = 0;             % Regularization factor of L2 norm
 weights = ones(Nr,1);   % Weights
 % weights = 1./rc; weights = weights/sum(weights)*Nr;
 options = optimoptions(@lsqnonlin,'Display','off','Algorithm','levenberg-marquardt');
-Pv_fit = lsqnonlin(@(x)costfunction(Pa,x,rc,dr,lambda,weights),xstarts,[],[],options);
+Pv_fit = lsqnonlin(@(x)costfunction(Pa,x,rc,dr,weights),xstarts,[],[],options);
 
 % Normalization
 Pv_fit(Pv_fit<0) = 0;
@@ -50,7 +49,9 @@ figure; hold on;
 hv = plot(rc,Pv,'-b','linewidth',1);            % Ground truth, sphere radius histogram
 ha = plot(rc,Pa,'-r','linewidth',1);            % Input, cross-section radius histogram
 hv_fit = plot(rc,Pv_fit,'--k','linewidth',1);   % Output, unfolded sphere radius histogram
-legend([hv,ha,hv_fit],{'Ground truth, sphere radius histogram','Input, cross-section radius histogram','Output, unfolded sphere histogram'},'fontsize',20,'interpreter','latex');
+legend([hv,ha,hv_fit],{'Ground truth, sphere radius histogram',...
+    'Input, cross-section radius histogram',...
+    'Output, unfolded sphere histogram'},'fontsize',20,'interpreter','latex');
 box on; grid on;
 set(gca,'fontsize',12);
 xlabel('radius ($\mu$m)','interpreter','latex','fontsize',20);
