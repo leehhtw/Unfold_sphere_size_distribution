@@ -36,12 +36,11 @@ Pa = Pv2Pa(Nc,rc,dr);
 toc;
 
 xstarts = Pa;
-lambda = 0;
 weights = ones(Nr,1);
 % weights = 1./rc;
 weights = weights/sum(weights)*Nr;
 options = optimoptions(@lsqnonlin,'Display','off','Algorithm','levenberg-marquardt');%,'MaxIterations',2e3,'MaxFunctionEvaluations',2e3);
-[xi,fxi] = lsqnonlin(@(x)costfunction(Pa,x,rc,dr,lambda,weights),xstarts,[],[],options);
+[xi,fxi] = lsqnonlin(@(x)costfunction(Pa,x,rc,dr,weights),xstarts,[],[],options);
 xi(xi<0) = 0;
 xi = xi/sum(xi)/dr;
 
@@ -50,38 +49,3 @@ plot(rc,Pa,'-r');
 plot(rc,xi,'--b');
 Pa2 = Pv2Pa(xi,rc,dr);
 plot(rc,Pa2,'--r');
-
-%%
-rg = sqrt(prod(cellsize,2));
-a = 20;max(rg);
-Nr = 20;
-edges = linspace(0,a,Nr+1);
-dr = mean(diff(edges));
-rc = edges(1:end-1)/2 + edges(2:end)/2;
-rc = rc(:);
-Pa = histcounts(rg,edges);
-Pa = Pa(:);
-Pa = Pa/sum(Pa)/dr;
-
-
-
-figure; 
-bar(rc,Pa,0.3);
-% plot(rc,Pa,'-r'); 
-
-xstarts = Pa;
-lambda = 0;
-weights = ones(Nr,1);
-weights = weights/sum(weights)*Nr;
-options = optimoptions(@lsqnonlin,'Display','off','Algorithm','levenberg-marquardt');%,'MaxIterations',2e3,'MaxFunctionEvaluations',2e3);
-[xi,fxi] = lsqnonlin(@(x)costfunction(Pa,x,rc,dr,lambda,weights),xstarts,[],[],options);
-xi(xi<0) = 0;
-xi = xi/sum(xi)/dr;
-hold on; bar(rc+0.3,xi,0.3);
-% hold on; plot(rc,xi,'-b');
-
-
-
-
-
-
